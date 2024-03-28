@@ -10,19 +10,19 @@ public class mainSystem {
     public static void displayMenu(){
         System.out.println("============================== WELCOME HALL BOOKING SYSTEM MENU ==============================");
         System.out.println("||                             [[ Application Menu ]]                                       ||");
-        System.out.println("||                             [<A>] BOOKING HALL                                           ||");
-        System.out.println("||                             [<B>] SHOW HALL                                              ||");
-        System.out.println("||                             [<C>] SHOWTIME                                               ||");
-        System.out.println("||                             [<D>] REBOOT SHOWTIME                                        ||");
-        System.out.println("||                             [<E>] HISTORY                                                ||");
-        System.out.println("||                             [<F>] EXIT HALL                                              ||");
+        System.out.println("||                             [<1>] BOOKING HALL                                           ||");
+        System.out.println("||                             [<2>] SHOW HALL                                              ||");
+        System.out.println("||                             [<3>] SHOWTIME                                               ||");
+        System.out.println("||                             [<4>] REBOOT SHOWTIME                                        ||");
+        System.out.println("||                             [<5>] HISTORY                                                ||");
+        System.out.println("||                             [<6>] EXIT HALL                                              ||");
         System.out.println("==============================================================================================");
     }
     public static void displayShowtime(){
         System.out.println("============================== #DAILY SHOWTIME OF CSTAD HALL# ================================");
-        System.out.println("||                             # A) Morning (10:00AM - 12:30PM)  #                          ||");
-        System.out.println("||                             # B) Afternoon (03:00PM - 5:30PM) #                          ||");
-        System.out.println("||                             # C) Night (07:00PM - 09:30PM)    #                          ||");
+        System.out.println("||                             # 1) Morning (10:00AM - 12:30PM)  #                          ||");
+        System.out.println("||                             # 2) Afternoon (03:00PM - 5:30PM) #                          ||");
+        System.out.println("||                             # 3) Night (07:00PM - 09:30PM)    #                          ||");
         System.out.println("==============================================================================================");
     }
     public static void displayTitle(){
@@ -36,15 +36,36 @@ public class mainSystem {
         Matcher matcher = pattern1.matcher(input);
         return matcher.matches();
     }
+    public static void main(String[] args){
+        addHistory('a',1,"asd");
+        displayTitle();
+        String[] history = new String[50];
+        Scanner scanner = new Scanner(System.in);
+        boolean checkScanner = true;
+        String pattern = "[1-9]+";
+        String msg = "Sorry...! Please Input Positive Number Only";
+
+        int rows = 0, cols = 0;
+        int checkedRow = checkRows(scanner, pattern, msg, rows);
+        int checkedCol = checkCols(scanner, pattern, msg, cols);
+        int total = checkedRow * checkedCol;
+
+        System.out.println("==============================================================================================");
+        System.out.println("||                  => Number Of Rows: " + checkedRow + "Rows" + "                          ||");
+        System.out.println("||                  => Number Of Seaters per Row: " + checkedCol + "Seaters" + "            ||");
+        System.out.println("||                  => Total Seaters: " + total + "Seaters" + "                             ||");
+        System.out.println("==============================================================================================");
+        optionMenu(checkedRow, checkedCol);
+    }
     private static int checkRows(Scanner scanner, String pattern, String msg, int rows){
         do {
             System.out.println("==========================================================================================");
             System.out.println("||                  # Setting: Set row and seater per row #                             ||");
-            System.out.print("||                  => Please Config total rows in hall : " + "                           ||");
-            String rowHall = scanner.nextLine();
+            System.out.print("||                  => Please Config total rows in hall : ");
+            String rowInHall = scanner.nextLine();
             System.out.println("==========================================================================================");
-            if (displayInputDate(rowHall, pattern, msg)){
-                rows = Integer.parseInt(rowHall);
+            if (displayInputDate(rowInHall, pattern, msg)){
+                rows = Integer.parseInt(rowInHall);
                 break;
             }
             else {
@@ -56,7 +77,7 @@ public class mainSystem {
     private static int checkCols(Scanner scanner, String pattern, String msg, int cols){
         do {
             System.out.println("==========================================================================================");
-            System.out.println("||                  => Please Config total seats rows in hall : " + "                   ||");
+            System.out.print("||                  => Please Config total seats rows in hall : ");
             String totalSeatRow = scanner.nextLine();
             System.out.println("==========================================================================================");
             if (displayInputDate(totalSeatRow, pattern, msg)){
@@ -71,34 +92,42 @@ public class mainSystem {
         return cols;
     }
     private static void bookingSeat(String[][] hall, Scanner input){
-        System.out.print("Enter Seat: ");
-        String InputUser = input.nextLine();
+        System.out.print("Enter Seats: ");
+        String inputUser = input.nextLine();
         System.out.print("Enter UserID: ");
-        String[] seatArray = InputUser.split(",");
-        String UserID = input.nextLine();
-        String[] inputSplit = InputUser.split("-");
-        String getResult = "";
+        String[] seatArray = inputUser.split(",");
+        String userID = input.nextLine();
         String addedHistory = "";
-        char letterResult = 0;
-        int no = 0;
-        for (String seat : seatArray){
-            String seatSplit = seat.replaceAll("-","");
-            letterResult = seatSplit.charAt(0);
-            char noChar = seat.charAt(1);
-            no = Character.getNumericValue(noChar);
-            char seats = 50;
 
-            for (int i=0; i < hall.length; i++){
-                for (int j=0; j < hall[i].length; j++){
-                    if (hall[i][j] == null){
-                        System.out.print("|" + (char)(seats + i) + "-" + (j + 1) + ":: " + hall[i][j] + "|\t");
-                    }
-                    if (letterResult == (char) (seats + i) && no == (j + 1)){
-                        hall[i][j] = "BO";
-                        addedHistory = addHistory(letterResult,no,UserID);
-                        if (historyIndex < history.length){
-                            history[historyIndex] = addedHistory;
-                            historyIndex++;
+        if (inputUser == inputUser || userID == userID){
+            System.out.println("User are Done Booking?");
+        }
+        else {
+            System.out.println("Please Input Again Hall Booking?");
+        }
+
+        for (String seat : seatArray) {
+            String[] seatSplit = seat.split("-");
+
+            if (seatSplit.length != 2) {
+                System.out.println("Invalid seat format: " + seat);
+                continue;
+            }
+
+            char letterResult = seatSplit[0].charAt(0);
+            int number = Integer.parseInt(seatSplit[1]);
+
+            for (int i = 0; i < hall.length; i++) {
+                for (int j = 0; j < hall[i].length; j++) {
+                    if (hall[i][j].equals("AV")) {
+                        char seatChar = (char) ('A' + i);
+                        if (letterResult == seatChar && number == (j + 1)) {
+                            hall[i][j] = "BO";
+                            addedHistory = addHistory(letterResult, number, userID);
+                            if (historyIndex < history.length) {
+                                history[historyIndex] = addedHistory;
+                                historyIndex++;
+                            }
                         }
                     }
                 }
@@ -106,142 +135,6 @@ public class mainSystem {
         }
         System.out.println("============================== #BOOKING SUCCESSFULLY....!# ===================================");
     }
-//    private static void toTitleCase(String inputVal){
-//        if (inputVal.length() == 0) return;
-//        if (inputVal.length() == 1) return inputVal.toUpperCase(String);
-//
-//    }
-    public static void optionMenu(int rowHall, int colHall){
-        String[][] hall1 = new String[rowHall][colHall];
-        String[][] hall2 = new String[rowHall][colHall];
-        String[][] hall3 = new String[rowHall][colHall];
-        initHall(hall1);
-        initHall(hall2);
-        initHall(hall3);
-        String[][] newHall = new String[rowHall][colHall];
-
-        boolean optionCheck = true;
-        Scanner scanner1 = new Scanner(System.in);
-        String pattern = "[ 1 - 9 ] +";
-        String msg = "Sorry...! Please Input Positive Number Only";
-        char seat = 50;
-        int hall = 0;
-        int idUser = 0;
-
-        do {
-            displayMenu();
-            System.out.println("=> Please Select Menu Item/No: ");
-            String choose = scanner1.nextLine();
-            if (displayInputDate(choose, pattern, msg)){
-                toTitleCase = choose.nextLine();
-                if (toTitleCase != null){
-                    System.out.println("Sorry...! You can choose only of upperCase OR lowerCase...!");
-                    optionCheck = true;
-                }
-                else {
-                    switch (toTitleCase(AbCd)){
-                        case 'A' ->{
-                            boolean checkHall = true;
-                            do {
-                                System.out.println("============================== WELCOME START HALL BOOKING SYSTEM ==============================");
-                                displayShowtime();
-                                System.out.print("=> Please Select Showtime ( A | B | C ): ");
-                                String select = scanner1.next();
-                                if (displayInputDate(select, pattern, msg)){
-                                    hall = Integer.parseInt(select);
-                                    if (hall != 0){
-                                        System.out.println("Sorry...! You can choose only...!");
-                                        checkHall = true;
-                                    }
-                                    else {
-                                        int i = 0, j = 0;
-                                        switch (hall){
-                                            case 'A' ->{
-                                                System.out.println("============================== #HALL 1# ==============================");
-                                                for (i=0; i< hall1.length; i++){
-                                                    for (j=0; j< hall1[i].length; j++){
-                                                        if (hall1[i][j] != null){
-                                                            System.out.println("|" + (char) (seat + i) + "-" + (j + 1) + ":: " + hall1[i][j] + "|\t");
-                                                        }
-                                                        System.out.println();
-                                                    }
-                                                }
-                                                alertMsg();
-                                                bookingSeat(hall1,scanner1);
-                                            }
-                                            case 'B' ->{
-                                                System.out.println("============================== #HALL 2# ==============================");
-                                                for (i=0; i< hall2.length; i++){
-                                                    for (j=0; j< hall2[i].length; j++){
-                                                        if (hall2[i][j] != null){
-                                                            System.out.println("|" + (char) (seat + i) + "-" + (j + 1) + ":: " + hall2[i][j] + "|\t");
-                                                        }
-                                                        System.out.println();
-                                                    }
-                                                }
-                                                alertMsg();
-                                                bookingSeat(hall2,scanner1);
-                                            }
-                                            case 'C' ->{
-                                                System.out.println("============================== #HALL 3# ==============================");
-                                                for (i=0; i< hall3.length; i++){
-                                                    for (j=0; j< hall3[i].length; j++){
-                                                        if (hall3[i][j] != null){
-                                                            System.out.println("|" + (char) (seat + i) + "-" + (j + 1) + ":: " + hall3[i][j] + "|\t");
-                                                        }
-                                                        System.out.println();
-                                                    }
-                                                }
-                                                alertMsg();
-                                                bookingSeat(hall3,scanner1);
-                                            }
-                                        }
-                                    }
-                                }
-                                checkHall = false;
-                            }while (checkHall);
-                        }
-                        case 'B' ->{
-                            System.out.println("============================== #SHOW ALL HALL# ===========================");
-                            System.out.println("=============================== # HALL 1# ================================");
-                            showAllHall(hall1);
-                            System.out.println("=============================== # HALL 2# ================================");
-                            showAllHall(hall2);
-                            System.out.println("=============================== # HALL 3# ================================");
-                            showAllHall(hall3);
-                        }
-                        case 'C' ->{
-                            displayShowtime();
-                        }
-                        case 'D' ->{
-                            System.out.println("============================== #REBOOTING HALL# ===========================");
-                            initHall(hall1);
-                            initHall(hall2);
-                            initHall(hall3);
-                            System.out.println("================== #REBOOTING HALL SUCCESSFULLY...!# ======================");
-                        }
-                        case 'E' ->{
-                            System.out.println("=============================== #SHOW HISTORY# ============================");
-                            for (int i=0; i<history.length; i++){
-                                if (history[i] != null){
-                                    System.out.println(history[i]);
-                                }
-                            }
-                            System.out.println("===========================================================================");
-                        }
-                        case 'F' ->{
-                            System.exit(0);
-                        }
-                    }
-                }
-            }
-            else {
-                System.out.println(msg);
-            }
-            optionCheck = false;
-        }while (optionCheck);
-    }
-
     private static void alertMsg(){
         System.out.println("=============================== # INSTRUCTION IN CHAIR # =====================================");
         System.out.println("================================== # Single : C-1 # ==========================================");
@@ -255,7 +148,7 @@ public class mainSystem {
         }
     }
     private static void showAllHall(String[][] hall){
-        char seat = 50;
+        char seat = 65;
         for (int i=0; i < hall.length; i++){
             for (int j=0; j < hall[i].length; j++){
                 System.out.print("|" + (char)(seat + i) + "-" + (j + 1) + ":: " + hall[i][j] + "|\t");
@@ -263,38 +156,164 @@ public class mainSystem {
             System.out.println();
         }
     }
-    private static String addHistory(char letter, int numberNo, String idUser){
+    private static String addHistory(char letter, int number, String UserId){
         LocalDateTime date = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
         String formattedDateTime = date.format(formatter);
-        String seat = letter + "-" + numberNo;
+        String seat = letter + "-" + number;
         System.out.println("==============================================================================================");
         return String.format("\n" +
-                "\n #Seat : %s" +
-                "\n #User ID : %s" +
-                "\n #Date : %s",
-                seat, idUser, formattedDateTime);
+                        "\n #Seat : %s" +
+                        "\n #User ID : %s" +
+                        "\n #Date : %s",
+                        seat, UserId, formattedDateTime);
     }
+    public static void optionMenu(int rowHall, int colHall){
+        String[][] hall1 = new String[rowHall][colHall];
+        String[][] hall2 = new String[rowHall][colHall];
+        String[][] hall3 = new String[rowHall][colHall];
 
-    public static void main(String[] args){
-        addHistory('a',1,"asd");
-        displayTitle();
-        String[] history = new String[50];
-        Scanner scanner = new Scanner(System.in);
-        boolean checkScanner = true;
-        String pattern = "[ 1 + 9 ] + ";
+        initHall(hall1);
+        initHall(hall2);
+        initHall(hall3);
+        String[][] newHall = new String[rowHall][colHall];
+
+        boolean optionCheck = true;
+        Scanner scanner1 = new Scanner(System.in);
+        String pattern = "[1-9]+";
         String msg = "Sorry...! Please Input Positive Number Only";
-        int rows = 0;
-        int cols = 0;
-        int total;
-        int checkedRow = checkRows(scanner, pattern, msg, rows);
-        int checkedCol = checkCols(scanner, pattern, msg, cols);
-        total = checkedRow * checkedCol;
-        System.out.println("==============================================================================================");
-        System.out.println("||                  => Number Of Rows: " + checkedRow + "Rows" + "                          ||");
-        System.out.println("||                  => Number Of Seaters per Row: " + checkedCol + "Seaters" + "             ||");
-        System.out.println("||                  => Total Seaters: " + total + "Seaters" + "                             ||");
-        System.out.println("==============================================================================================");
-        optionMenu(checkedRow, checkedCol);
+
+        int optionCase = 0;
+        char seat = 65;
+        int hall = 0;
+        char ch;
+
+        do {
+            displayMenu();
+            System.out.print("=> Please Select Menu Item/No: ");
+            String option = scanner1.nextLine();
+            if (displayInputDate(option, pattern, msg)){
+                optionCase = Integer.parseInt(option);
+                if (optionCase > 6){
+                    System.out.println("Sorry...! You can choose only...!");
+                    optionCheck = true;
+                }
+                else {
+                    switch (optionCase){
+                        case 1 ->{
+                            boolean checkHall = true;
+                            do {
+                                System.out.println("============================== WELCOME START HALL BOOKING SYSTEM ==============================");
+                                displayShowtime();
+                                System.out.print("=> Please Select Showtime ( 1 | 2 | 3 ): ");
+                                String optionHall = scanner1.nextLine();
+                                if (displayInputDate(optionHall, pattern, msg)){
+                                    hall = Integer.parseInt(optionHall);
+                                    if (hall > 4){
+                                        System.out.println("Sorry...! You can choose only...!");
+                                        checkHall = true;
+                                    }
+                                    else {
+                                        int i = 0;
+                                        int j = 0;
+                                        switch (hall){
+                                            case 1 ->{
+                                                System.out.println("============================== #HALL 1# ==============================");
+                                                for (i=0; i< hall1.length; i++){
+                                                    for (j=0; j< hall1[i].length; j++){
+                                                        if (hall1[i][j] != null){
+                                                            System.out.print("|" + (char) (seat + i) + "-" + (j + 1) + ":: " + hall1[i][j] + "|\t");
+                                                        }
+                                                        System.out.println();
+                                                    }
+                                                }
+                                                alertMsg();
+                                                bookingSeat(hall1,scanner1);
+                                            }
+
+                                            case 2 ->{
+                                                System.out.println("============================== #HALL 2# ==============================");
+                                                for (i=0; i< hall2.length; i++){
+                                                    for (j=0; j< hall2[i].length; j++){
+                                                        if (hall2[i][j] != null){
+                                                            System.out.print("|" + (char) (seat + i) + "-" + (j + 1) + ":: " + hall2[i][j] + "|\t");
+                                                        }
+                                                        System.out.println();
+                                                    }
+                                                }
+                                                alertMsg();
+                                                bookingSeat(hall2,scanner1);
+                                            }
+
+                                            case 3 ->{
+                                                System.out.println("============================== #HALL 3# ==============================");
+                                                for (i=0; i< hall3.length; i++){
+                                                    for (j=0; j< hall3[i].length; j++){
+                                                        if (hall3[i][j] != null){
+                                                            System.out.print("|" + (char) (seat + i) + "-" + (j + 1) + ":: " + hall3[i][j] + "|\t");
+                                                        }
+                                                        System.out.println();
+                                                    }
+                                                }
+                                                alertMsg();
+                                                bookingSeat(hall3,scanner1);
+                                            }
+                                        }
+                                    }
+                                }
+                                else {
+                                    System.out.println(msg);
+                                }
+                                checkHall = false;
+                            }while (checkHall);
+                        }
+
+                        case 2 ->{
+                            System.out.println("============================== #SHOW ALL HALL# ===========================");
+                            System.out.println("=============================== # HALL 1# ================================");
+                            showAllHall(hall1);
+                            System.out.println("=============================== # HALL 2# ================================");
+                            showAllHall(hall2);
+                            System.out.println("=============================== # HALL 3# ================================");
+                            showAllHall(hall3);
+                        }
+
+                        case 3 ->{
+                            displayShowtime();
+                        }
+
+                        case 4 ->{
+                            System.out.println("============================== #REBOOTING HALL# ===========================");
+                            initHall(hall1);
+                            initHall(hall2);
+                            initHall(hall3);
+                            System.out.println("================== #REBOOTING HALL SUCCESSFULLY...!# ======================");
+                        }
+
+                        case 5 ->{
+                            System.out.println("=============================== #SHOW HISTORY# ============================");
+                            for (int i=0; i<history.length; i++){
+                                if (history[i] != null){
+                                    System.out.println(history[i]);
+                                }
+                            }
+                            System.out.println("===========================================================================");
+                        }
+
+                        case 6 ->{
+                            System.exit(0);
+                        }
+                    }
+                }
+            }
+            else {
+                System.out.println(msg);
+            }
+            optionCheck = false;
+            System.out.println("===========================================================================");
+            System.out.print("Are You Sure to Booking?(yes/no): ");
+            ch = new Scanner(System.in).next().charAt(0);
+        }while (ch == 'y' || ch == 'Y');
     }
 }
