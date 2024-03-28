@@ -27,8 +27,13 @@ public class mainSystem {
     }
     public static void displayTitle(){
         System.out.println("==============================================================================================");
-        System.out.println("||                                       ACCESS BY CSTAD                                    ||");
-        System.out.println("||                                       BOOKING SYSTEM                                     ||");
+        System.out.println("" +
+                " ██████╗███████╗████████╗ █████╗ ██████╗     ██████╗  ██████╗  ██████╗ ██╗  ██╗██╗███╗   ██╗ ██████╗   \n" +
+                "██╔════╝██╔════╝╚══██╔══╝██╔══██╗██╔══██╗    ██╔══██╗██╔═══██╗██╔═══██╗██║ ██╔╝██║████╗  ██║██╔════╝   \n" +
+                "██║     ███████╗   ██║   ███████║██║  ██║    ██████╔╝██║   ██║██║   ██║█████╔╝ ██║██╔██╗ ██║██║  ███╗  \n" +
+                "██║     ╚════██║   ██║   ██╔══██║██║  ██║    ██╔══██╗██║   ██║██║   ██║██╔═██╗ ██║██║╚██╗██║██║   ██║  \n" +
+                "  ╚██████╗███████║   ██║   ██║  ██║██████╔╝    ██████╔╝╚██████╔╝╚██████╔╝██║  ██╗██║██║ ╚████║╚██████╔╝\n" +
+                "   ╚═════╝╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═════╝     ╚═════╝  ╚═════╝  ╚═════╝ ╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝ ╚═════╝   ");
         System.out.println("==============================================================================================");
     }
     public static boolean displayInputDate(String input, String pattern, String msg){
@@ -59,11 +64,11 @@ public class mainSystem {
     }
     private static int checkRows(Scanner scanner, String pattern, String msg, int rows){
         do {
-            System.out.println("==========================================================================================");
-            System.out.println("||                  # Setting: Set row and seater per row #                             ||");
+            System.out.println("==============================================================================================");
+            System.out.println("||                  # Setting: Set row and seater per row #                                 ||");
             System.out.print("||                  => Please Config total rows in hall : ");
             String rowInHall = scanner.nextLine();
-            System.out.println("==========================================================================================");
+            System.out.println("==============================================================================================");
             if (displayInputDate(rowInHall, pattern, msg)){
                 rows = Integer.parseInt(rowInHall);
                 break;
@@ -76,13 +81,13 @@ public class mainSystem {
     }
     private static int checkCols(Scanner scanner, String pattern, String msg, int cols){
         do {
-            System.out.println("==========================================================================================");
+            System.out.println("==============================================================================================");
             System.out.print("||                  => Please Config total seats rows in hall : ");
             String totalSeatRow = scanner.nextLine();
-            System.out.println("==========================================================================================");
+            System.out.println("==============================================================================================");
             if (displayInputDate(totalSeatRow, pattern, msg)){
                 cols = Integer.parseInt(totalSeatRow);
-                System.out.println("======================== You have successfully set up in hall ========================");
+                System.out.println("======================== You have successfully set up in hall ============================");
                 break;
             }
             else {
@@ -98,13 +103,6 @@ public class mainSystem {
         String[] seatArray = inputUser.split(",");
         String userID = input.nextLine();
         String addedHistory = "";
-
-        if (inputUser == inputUser || userID == userID){
-            System.out.println("User are Done Booking?");
-        }
-        else {
-            System.out.println("Please Input Again Hall Booking?");
-        }
 
         for (String seat : seatArray) {
             String[] seatSplit = seat.split("-");
@@ -163,7 +161,7 @@ public class mainSystem {
         String formattedDateTime = date.format(formatter);
         String seat = letter + "-" + number;
         System.out.println("==============================================================================================");
-        return String.format("\n" +
+        return String.format(
                         "\n #Seat : %s" +
                         "\n #User ID : %s" +
                         "\n #Date : %s",
@@ -219,7 +217,7 @@ public class mainSystem {
                                         int j = 0;
                                         switch (hall){
                                             case 1 ->{
-                                                System.out.println("============================== #HALL 1# ==============================");
+                                                System.out.println("======================================== #HALL 1# ========================================");
                                                 for (i=0; i< hall1.length; i++){
                                                     for (j=0; j< hall1[i].length; j++){
                                                         if (hall1[i][j] != null){
@@ -233,7 +231,7 @@ public class mainSystem {
                                             }
 
                                             case 2 ->{
-                                                System.out.println("============================== #HALL 2# ==============================");
+                                                System.out.println("======================================== #HALL 2# ========================================");
                                                 for (i=0; i< hall2.length; i++){
                                                     for (j=0; j< hall2[i].length; j++){
                                                         if (hall2[i][j] != null){
@@ -247,7 +245,7 @@ public class mainSystem {
                                             }
 
                                             case 3 ->{
-                                                System.out.println("============================== #HALL 3# ==============================");
+                                                System.out.println("======================================== #HALL 3# ========================================");
                                                 for (i=0; i< hall3.length; i++){
                                                     for (j=0; j< hall3[i].length; j++){
                                                         if (hall3[i][j] != null){
@@ -311,9 +309,19 @@ public class mainSystem {
                 System.out.println(msg);
             }
             optionCheck = false;
-            System.out.println("===========================================================================");
-            System.out.print("Are You Sure to Booking?(yes/no): ");
+            System.out.println("==============================================================================================");
+            System.out.print("Are You Sure to Booking?(y/n): ");
             ch = new Scanner(System.in).next().charAt(0);
+            if (ch == 'n' || ch == 'N'){
+                System.out.println("==============================================================================================");
+                System.out.println("" +
+                        "███████╗██╗   ██╗ ██████╗ ██████╗███████╗███████╗███████╗███████╗██╗   ██╗██╗     ██╗  ██╗   ██╗\n" +
+                        "██╔════╝██║   ██║██╔════╝██╔════╝██╔════╝██╔════╝██╔════╝██╔════╝██║   ██║██║     ██║  ╚██╗ ██╔╝\n" +
+                        "███████╗██║   ██║██║     ██║     █████╗  ███████╗███████╗█████╗  ██║   ██║██║     ██║   ╚████╔╝ \n" +
+                        "╚════██║██║   ██║██║     ██║     ██╔══╝  ╚════██║╚════██║██╔══╝  ██║   ██║██║     ██║    ╚██╔╝  \n" +
+                        "███████║╚██████╔╝╚██████╗╚██████╗███████╗███████║███████║██║     ╚██████╔╝███████╗███████╗██║   \n" +
+                        "╚══════╝ ╚═════╝  ╚═════╝ ╚═════╝╚══════╝╚══════╝╚══════╝╚═╝      ╚═════╝ ╚══════╝╚══════╝╚═╝     ");
+            }
         }while (ch == 'y' || ch == 'Y');
     }
 }
